@@ -102,6 +102,7 @@ def run():
         [
             sg.T("")
         ],
+        [sg.Text('Bienvenido', size=(30, 1), justification='center', font=("Helvetica", 25), relief=sg.RELIEF_RIDGE)],
         [
             sg.Text("Selecciona una carpeta: "), 
             sg.Input(key="-IN2-" ,change_submits=True), 
@@ -124,9 +125,9 @@ def run():
         ]
     ]
 
-
-
     window = sg.Window('Cosmo', layout, size=(600,400))
+    #window["-FILE LIST-"].hide()
+
     
     while True:
         event, values = window.read()
@@ -135,7 +136,7 @@ def run():
             break
         elif event == "Comenzar":
             print("vamo alla")
-    # Folder name was filled in, make a list of files in the folder
+            # Folder name was filled in, make a list of files in the folder
             folder = values["-FOLDER-"]
             try:
                 # Get list of files in folder
@@ -147,7 +148,7 @@ def run():
                 f
                 for f in file_list
                 if os.path.isfile(os.path.join(folder, f))
-                and f.lower().endswith((".png", ".gif", ".pdf"))
+                and f.lower().endswith((".pdf"))
             ]
             window["-FILE LIST-"].update(fnames)
 
