@@ -98,16 +98,58 @@ def run():
     #file_name, folder_name, status = read_csv()
     #move_file(file_name, folder_name, status)
     sg.theme("DarkTeal2")
-    layout = [[sg.T("")], [sg.Text("Selecciona una carpeta: "), sg.Input(key="-IN2-" ,change_submits=True), sg.FolderBrowse(key="-FOLDER-")], [sg.Text("Seleccionar inventario: "), sg.Input(), sg.FileBrowse(key="-FILE-")],[sg.Button("Comenzar")]]
-    window = sg.Window('Cosmo', layout, size=(600,150))
+    layout = [
+        [
+            sg.T("")
+        ],
+        [
+            sg.Text("Selecciona una carpeta: "), 
+            sg.Input(key="-IN2-" ,change_submits=True), 
+            sg.FolderBrowse(key="-FOLDER-")
+        ],
+        #[
+        #    sg.Text("Seleccionar inventario: "), 
+        #    sg.Input(), sg.FileBrowse(key="-FILE-")
+        #],
+        [
+        sg.Button("Comenzar")
+        ], 
+        [
+            sg.Listbox(
+            values=[], 
+            enable_events=True,
+            size=(40, 20), 
+            key="-FILE LIST-"
+        )
+        ]
+    ]
+
+
+
+    window = sg.Window('Cosmo', layout, size=(600,400))
     
     while True:
         event, values = window.read()
-        print(values["-FOLDER-"] , values["-FILE-"])
+        print(values["-FOLDER-"])
         if event == sg.WIN_CLOSED or event=="Exit":
             break
         elif event == "Comenzar":
             print("vamo alla")
+    # Folder name was filled in, make a list of files in the folder
+            folder = values["-FOLDER-"]
+            try:
+                # Get list of files in folder
+                file_list = os.listdir(folder)
+            except:
+                file_list = []
+
+            fnames = [
+                f
+                for f in file_list
+                if os.path.isfile(os.path.join(folder, f))
+                and f.lower().endswith((".png", ".gif", ".pdf"))
+            ]
+            window["-FILE LIST-"].update(fnames)
 
 
 if __name__ == "__main__":
