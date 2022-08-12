@@ -9,14 +9,14 @@ from datetime import datetime
 def read_csv(filename):
     with open(filename, newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
-        next(reader, None)
+        #next(reader, None)
         old_name_list = []
         new_name_list = []
         for row in reader:
             i = 0
             parts = row[i].split(";")
-            old_name_list.append(parts[0])
-            new_name_list.append(parts[1])
+            old_name_list.append(parts[0] + ".pdf")
+            new_name_list.append(parts[1] + ".pdf")
             i += 1 
         return old_name_list, new_name_list
 
@@ -129,7 +129,7 @@ def run():
             break
         elif event == "Cambiar":
             window_2_active = True
-            main_window.Hide()
+            main_window.Close()
             layout2 = [
             [
                 sg.T("")
@@ -159,7 +159,7 @@ def run():
                 if event2 == sg.WIN_CLOSED or event2 == 'Exit':
                     change_window.Close()
                     window_2_active = False
-                    main_window.UnHide()
+                    #main_window.UnHide()
                     break
                 folder = values2["FolderBrowse"]
                 try:
@@ -178,8 +178,6 @@ def run():
                 if event2 == "Comenzar":
                     csv_file = values2["-FILE-"]
                     old_names, new_names = read_csv(csv_file)
-                    print(old_names)
-                    print(new_names)
 
 
 if __name__ == "__main__":
