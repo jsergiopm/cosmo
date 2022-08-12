@@ -1,3 +1,4 @@
+from re import T
 import PySimpleGUI as sg
 import csv
 import shutil
@@ -97,62 +98,76 @@ def move_file(file_name, folder_names, status):
 def run():
     #file_name, folder_name, status = read_csv()
     #move_file(file_name, folder_name, status)
-    sg.theme("DarkTeal2")
-    layout = [
-        [
+    sg.theme("LightBrown3")
+
+    layout = [[
             sg.T("")
         ],
-        [sg.Text('Bienvenido', size=(30, 1), justification='center', font=("Helvetica", 25), relief=sg.RELIEF_RIDGE)],
+        [sg.Text('Bienvenido a Cosmo', size=(30, 1), justification='center', font=("Helvetica", 25))],
+        [sg.Text('Selecciona la instrucción que vas a ejecutar')], 
         [
-            sg.Text("Selecciona una carpeta: "), 
-            sg.Input(key="-IN2-" ,change_submits=True), 
-            sg.FolderBrowse(key="-FOLDER-")
-        ],
-        #[
-        #    sg.Text("Seleccionar inventario: "), 
-        #    sg.Input(), sg.FileBrowse(key="-FILE-")
-        #],
-        [
-        sg.Button("Ver")
-        ], 
-        [
-        sg.Button("Comenzar")
-        ], 
-        [
-            sg.Listbox(
-            values=[], 
-            enable_events=True,
-            size=(40, 20), 
-            key="-FILE LIST-"
-        )
-        ]
+        sg.Button("Cambiar"),
+        sg.Button("Mover archivos"),
+        ],  
     ]
 
-    window = sg.Window('Cosmo', layout, size=(600,400))
+    window_1 = sg.Window('Cosmo', layout, size=(330,150))
     #window["-FILE LIST-"].hide()
 
     window2_active = False
     while True:
-        event, values = window.read()
-        print(values["-FOLDER-"])
+        event, values = window_1.read()
         if event == sg.WIN_CLOSED or event=="Exit":
             break
-        elif event == "Ver":
-            # Folder name was filled in, make a list of files in the folder
-            folder = values["-FOLDER-"]
-            try:
-                # Get list of files in folder
-                file_list = os.listdir(folder)
-            except:
-                file_list = []
-
-            fnames = [
-                f
-                for f in file_list
-                if os.path.isfile(os.path.join(folder, f))
-                and f.lower().endswith((".pdf"))
+        elif event == "Cambiar":
+            window_2_active = True
+            window_1.Hide()
+            layout2 = [
+            [
+                sg.T("")
+            ],
+            [sg.Text('Cambiar nombre de archivos másivamente', justification='center', font=("Helvetica", 25), relief=sg.RELIEF_RIDGE)],
+            [
+                [sg.Text("Selecciona una carpeta: "), 
+                sg.FolderBrowse(key="FolderBrowse", button_text="Buscar")]
+            ],
+            [
+                sg.Text("Seleccionar inventario: "), 
+                sg.Input(), sg.FileBrowse(key="-FILE-", file_types=(("CSV FILES"), ("*.csv")), button_text="Seleccionar")
+            ],
+            [
+                sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-")
+            ],
+            [
+            sg.Button("Ver"),
+            sg.Button("Comenzar")
+            ], 
             ]
-            window["-FILE LIST-"].update(fnames)
+            
+            window_2 = sg.Window('Cosmo | Cambiar nombre', layout2)
+            while True:
+                event2, values2 = window_2.read()    
+                if event2 == sg.WIN_CLOSED or event2 == 'Exit':
+                    window_2.Close()
+                    window_2_active = False
+                    window_1.UnHide()
+                    break
+                folder = values2["FolderBrowse"]
+                try:
+                    # Get list of files in folder
+                    file_list = os.listdir(folder)
+                except:
+                    file_list = []
+
+                fnames = [
+                    f
+                    for f in file_list
+                    if os.path.isfile(os.path.join(folder, f))
+                    and f.lower().endswith((".pdf"))
+                ]
+                window_2["-FILE LIST-"].update(fnames)
+        elif event == "Comenzar":
+            pass
 
 
 if __name__ == "__main__":
