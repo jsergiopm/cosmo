@@ -6,8 +6,8 @@ import os
 from datetime import datetime
 
 
-def read_csv():
-    with open('final_db.csv', newline='', encoding='utf-8') as csvfile:
+def read_csv(filename):
+    with open(filename, newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
         next(reader, None)
         old_name_list = []
@@ -15,8 +15,8 @@ def read_csv():
         for row in reader:
             i = 0
             parts = row[i].split(";")
-            old_name_list.append(parts[0]+".pdf")
-            new_name_list.append(parts[1]+".pdf")
+            old_name_list.append(parts[0])
+            new_name_list.append(parts[1])
             i += 1 
         return old_name_list, new_name_list
 
@@ -33,7 +33,7 @@ def find_item(HL, item):
             return i 
 
 
-def change_file_name(file):
+def iterative_file_name(file):
     if file.find("-") != -1:
         if file.find("-1") != -1:
             file = file.replace("-1", "-2")
@@ -73,7 +73,7 @@ def move_file(file_name, folder_names, status):
         elif status[index] == "INACTIVOS":
             destination = 'D:/CARPETAS/INACTIVOS/' + folder_names[index] + '/PrestacionSocial/' + file
         if os.path.exists(destination):
-            file = change_file_name(file)
+            file = iterative_file_name(file)
             print("El archivo ya se encuentra en el destino, el nombre del archivo ahora es", file)
             #log += "El archivo "+ file + " ya se encuentra en el destino \n"
             #continue
@@ -95,6 +95,14 @@ def move_file(file_name, folder_names, status):
     write_log(log + '\n')
 
 
+def change_filename(list_of_files, old_names, new_names):
+    new_list = []
+    for file in list_of_files:
+        index = old_names.index(file)
+        new_list.append(new_names[index])
+    print(new_list)
+
+
 def run():
     #file_name, folder_name, status = read_csv()
     #move_file(file_name, folder_name, status)
@@ -111,17 +119,17 @@ def run():
         ],  
     ]
 
-    window_1 = sg.Window('Cosmo', layout, size=(330,150))
+    main_window = sg.Window('Cosmo', layout, size=(330,150))
     #window["-FILE LIST-"].hide()
 
     window2_active = False
     while True:
-        event, values = window_1.read()
+        event, values = main_window.read()
         if event == sg.WIN_CLOSED or event=="Exit":
             break
         elif event == "Cambiar":
             window_2_active = True
-            window_1.Hide()
+            main_window.Hide()
             layout2 = [
             [
                 sg.T("")
@@ -133,7 +141,7 @@ def run():
             ],
             [
                 sg.Text("Seleccionar inventario: "), 
-                sg.Input(), sg.FileBrowse(key="-FILE-", file_types=(("CSV FILES"), ("*.csv")), button_text="Seleccionar")
+                sg.Input(), sg.FileBrowse(key="-FILE-", file_types=(('CSV FILES'), ('*.csv')), button_text="Seleccionar")
             ],
             [
                 sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-")
@@ -144,13 +152,14 @@ def run():
             ], 
             ]
             
-            window_2 = sg.Window('Cosmo | Cambiar nombre', layout2)
+            change_window = sg.Window('Cosmo | Cambiar nombre', layout2)
             while True:
-                event2, values2 = window_2.read()    
+                event2, values2 = change_window.read()
+                    
                 if event2 == sg.WIN_CLOSED or event2 == 'Exit':
-                    window_2.Close()
+                    change_window.Close()
                     window_2_active = False
-                    window_1.UnHide()
+                    main_window.UnHide()
                     break
                 folder = values2["FolderBrowse"]
                 try:
@@ -165,9 +174,12 @@ def run():
                     if os.path.isfile(os.path.join(folder, f))
                     and f.lower().endswith((".pdf"))
                 ]
-                window_2["-FILE LIST-"].update(fnames)
-        elif event == "Comenzar":
-            pass
+                change_window["-FILE LIST-"].update(fnames)
+                if event2 == "Comenzar":
+                    csv_file = values2["-FILE-"]
+                    old_names, new_names = read_csv(csv_file)
+                    print(old_names)
+                    print(new_names)
 
 
 if __name__ == "__main__":
