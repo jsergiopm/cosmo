@@ -113,6 +113,9 @@ def run():
         #    sg.Input(), sg.FileBrowse(key="-FILE-")
         #],
         [
+        sg.Button("Ver")
+        ], 
+        [
         sg.Button("Comenzar")
         ], 
         [
@@ -128,14 +131,13 @@ def run():
     window = sg.Window('Cosmo', layout, size=(600,400))
     #window["-FILE LIST-"].hide()
 
-    
+    window2_active = False
     while True:
         event, values = window.read()
         print(values["-FOLDER-"])
         if event == sg.WIN_CLOSED or event=="Exit":
             break
-        elif event == "Comenzar":
-            print("vamo alla")
+        elif event == "Ver":
             # Folder name was filled in, make a list of files in the folder
             folder = values["-FOLDER-"]
             try:
