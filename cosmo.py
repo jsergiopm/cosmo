@@ -98,9 +98,12 @@ def move_file(file_name, folder_names, status):
 def change_filename(list_of_files, old_names, new_names):
     new_list = []
     for file in list_of_files:
-        index = old_names.index(file)
-        new_list.append(new_names[index])
-    print(new_list)
+        try:
+            index = old_names.index(file)
+            new_list.append(new_names[index])
+        except:
+            pass
+    return new_list
 
 
 def run():
@@ -108,7 +111,8 @@ def run():
     #move_file(file_name, folder_name, status)
     sg.theme("LightBrown3")
 
-    layout = [[
+    layout = [
+        [
             sg.T("")
         ],
         [sg.Text('Bienvenido a Cosmo', size=(30, 1), justification='center', font=("Helvetica", 25))],
@@ -120,7 +124,7 @@ def run():
     ]
 
     main_window = sg.Window('Cosmo', layout, size=(330,150))
-    #window["-FILE LIST-"].hide()
+    #window["OLD-FILENAMES-LIST"].hide()
 
     window2_active = False
     while True:
@@ -144,7 +148,8 @@ def run():
                 sg.Input(), sg.FileBrowse(key="-FILE-", file_types=(('CSV FILES'), ('*.csv')), button_text="Seleccionar")
             ],
             [
-                sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-")
+                sg.Listbox(values=[], enable_events=True, size=(40, 20), key="OLD-FILENAMES-LIST"),
+                sg.Listbox(values=[], enable_events=True, size=(40, 20), key="NEW-FILENAMES-LIST")
             ],
             [
             sg.Button("Ver"),
@@ -174,10 +179,12 @@ def run():
                     if os.path.isfile(os.path.join(folder, f))
                     and f.lower().endswith((".pdf"))
                 ]
-                change_window["-FILE LIST-"].update(fnames)
+                change_window["OLD-FILENAMES-LIST"].update(fnames)
                 if event2 == "Comenzar":
                     csv_file = values2["-FILE-"]
                     old_names, new_names = read_csv(csv_file)
+                    list_of_new_names = change_filename(file_list, old_names, new_names)
+                    change_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
 
 
 if __name__ == "__main__":
