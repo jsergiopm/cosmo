@@ -97,6 +97,8 @@ def move_file(file_name, folder_names, status):
 
 def change_filename(list_of_files, old_names, new_names):
     new_list = []
+    print(old_names)
+    print(new_names)
     for file in list_of_files:
         try:
             index = old_names.index(file)
@@ -126,13 +128,13 @@ def run():
     main_window = sg.Window('Cosmo', layout, size=(330,150))
     #window["OLD-FILENAMES-LIST"].hide()
 
-    window2_active = False
+    change_window_active = False
     while True:
         event, values = main_window.read()
         if event == sg.WIN_CLOSED or event=="Exit":
             break
         elif event == "Cambiar":
-            window_2_active = True
+            change_window_active = True
             main_window.Close()
             layout2 = [
             [
@@ -180,12 +182,31 @@ def run():
                     and f.lower().endswith((".pdf"))
                 ]
                 change_window["OLD-FILENAMES-LIST"].update(fnames)
+                csv_file = values2["-FILE-"]
+                old_names, new_names = read_csv(csv_file)
+                list_of_new_names = change_filename(file_list, old_names, new_names)
+                print(list_of_new_names)
+                change_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
                 if event2 == "Comenzar":
-                    csv_file = values2["-FILE-"]
-                    old_names, new_names = read_csv(csv_file)
-                    list_of_new_names = change_filename(file_list, old_names, new_names)
-                    change_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
+                    change_window.close()
+                    BAR_MAX =  len(file_list)
+                    layout3 = [[sg.Text('Cambiando nombres...')],
+                    [sg.ProgressBar(BAR_MAX, orientation='h', size=(20,20), key='-PROG-')],
+                    [sg.Cancel()]]
 
+                    change_progress_window = sg.Window('Cambiar nombre de los atchivos', layout3)
+
+                    for i in range(len(file_list)):
+                        event, values = change_progress_window.read(timeout=10)
+                        if event == 'Cancel' or event == sg.WIN_CLOSED:
+                            break
+                        source = os.path.join(folder,file_list[i])
+                        destination = os.path.join(folder,list_of_new_names[i])
+                        os.rename(source, destination)
+                        change_progress_window['-PROG-'].update(i+1)
+                    change_progress_window.close()
+
+                    sg.popup('Tarea completada con éxito')
 
 if __name__ == "__main__":
     run()
