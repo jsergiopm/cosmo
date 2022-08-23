@@ -164,12 +164,14 @@ def run():
                     break
                 excel = values4["excel"]
                 data_from_excel = pd.read_html(excel)
+                excel_2 = data_from_excel[0]
+                data_from_excel = excel_2.values.tolist()
+                # print(data_from_excel)
                 if event4 == "Cargar inventario":
                     move_files_window.close()
-                    print(data_from_excel[2][3])
                     headings = [str(data_from_excel[0][x])+' ..' for x in range(len(data_from_excel[0]))]
                     layout5 = [
-                        [sg.Text('Cambiar nombre de archivos másivamente', justification='center')]
+                        [sg.Text('Cambiar nombre de archivos másivamente', justification='center')],
                         [sg.Table(values=data_from_excel, 
                         headings=headings, 
                         max_col_width=35,
@@ -186,12 +188,10 @@ def run():
                         event5, values = table_window.read()
                         if event5 == "Exit" or event == sg.WIN_CLOSED:
                             break
+                        table_window.close()
                             
-                    table_window.close()
 
 
-                
-                
 
 
 if __name__ == "__main__":
