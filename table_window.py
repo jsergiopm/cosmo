@@ -8,14 +8,15 @@ def create(data_from_excel, headings):
                         headings=headings, 
                         max_col_width=35,
                         auto_size_columns=True,
-                        display_row_numbers=True,
                         justification='right',
+                        vertical_scroll_only = False,
                         num_rows=10,
+                        hide_vertical_scroll=True,
                         key='-TABLE-',
                         row_height=35)],
                         [sg.Button('Siguiente')]
                     ]
-    table_window = sg.Window("Información del inventario", table_window_layout)
+    table_window = sg.Window("Información del inventario", table_window_layout, element_justification='c')
     while True:
         event, values = table_window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
