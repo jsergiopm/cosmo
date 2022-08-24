@@ -57,12 +57,12 @@ def create():
     change_filenames_window = sg.Window('Cosmo | Cambiar nombre', change_filenames_window_layout)
     
     while True:
-        event2, values2 = change_filenames_window.read()
+        event, values = change_filenames_window.read()
             
-        if event2 == sg.WIN_CLOSED or event2 == 'Exit':
+        if event == sg.WIN_CLOSED or event == 'Exit':
             change_filenames_window.Close()
             break
-        folder = values2["FolderBrowse"]
+        folder = values["FolderBrowse"]
         try:
             # Get list of files in folder
             file_list = os.listdir(folder)
@@ -76,14 +76,14 @@ def create():
             and f.lower().endswith((".pdf"))
         ]
 
-        if event2 == "Ver":
+        if event == "Ver":
             change_filenames_window["OLD-FILENAMES-LIST"].update(visible=True)
             change_filenames_window["NEW-FILENAMES-LIST"].update(visible=True)
             change_filenames_window["OLD-FILENAMES-LIST"].update(fnames)
-            csv_file = values2["-FILE-"]
+            csv_file = values["-FILE-"]
             old_names, new_names = read_csv(csv_file)
             list_of_new_names = change_filename(file_list, old_names, new_names)
             change_filenames_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
-        if event2 == "Comenzar":
+        if event == "Comenzar":
             change_filenames_window.close()
             change_progress_window.create(file_list, folder, list_of_new_names)

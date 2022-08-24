@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import choose_move_files_options_window
 
 def create(data_from_excel, headings):
     table_window_layout = [
@@ -11,12 +12,16 @@ def create(data_from_excel, headings):
                         justification='right',
                         num_rows=10,
                         key='-TABLE-',
-                        enable_events = True,
-                        row_height=35)]
+                        row_height=35)],
+                        [sg.Button('Siguiente')]
                     ]
     table_window = sg.Window("Información del inventario", table_window_layout)
     while True:
         event, values = table_window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
-    table_window.close()
+        if event == "Siguiente":
+            table_window.close()
+            choose_move_files_options_window.create(data_from_excel, headings)
+
+            
