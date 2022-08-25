@@ -34,5 +34,5 @@ def create():
         # print(data_from_excel)
         if event == "Cargar inventario":
             move_files_window.close()
-            headings = [str(data_from_excel[0][x])+' ..' for x in range(len(data_from_excel[0]))]
+            headings = [str(data_from_excel[0][x]) for x in range(len(data_from_excel[0]))]
             table_window.create(data_from_excel, headings)

@@ -11,12 +11,11 @@ def create(data_from_excel, headings):
                         justification='right',
                         vertical_scroll_only = False,
                         num_rows=10,
-                        hide_vertical_scroll=True,
                         key='-TABLE-',
                         row_height=35)],
-                        [sg.Button('Siguiente')]
+                        [sg.Push(), sg.Button('Siguiente')]
                     ]
-    table_window = sg.Window("Información del inventario", table_window_layout, element_justification='c')
+    table_window = sg.Window("Información del inventario", table_window_layout, element_justification='c', size=(1000, 500))
     while True:
         event, values = table_window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
