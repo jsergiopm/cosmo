@@ -1,6 +1,6 @@
-from pydoc import visiblename
 import PySimpleGUI as sg
-
+import choose_destination_window
+import pandas as pd
 
 def create_structure(separator, selected_options, data_from_excel):
     indexes = []
@@ -8,11 +8,15 @@ def create_structure(separator, selected_options, data_from_excel):
     size_selection = len(selected_options)
     for i in range(size_selection):
         indexes.append(data_from_excel[0].index(selected_options[i]))
-        final_structure = final_structure + data_from_excel[1][indexes[i]]
-        if i + 1 == size_selection:
-            break
+        tmp = data_from_excel[1][indexes[i]]
+        if pd.isna(tmp):
+            pass
         else:
-            final_structure = final_structure + separator
+            final_structure = "%s%s" % (final_structure, data_from_excel[1][indexes[i]])
+            if i + 1 == size_selection:
+                break
+            else:
+                final_structure = final_structure + separator
     return final_structure
 
 
@@ -31,7 +35,7 @@ def create(data_from_excel, headings):
         [sg.Button('-', visible=False), sg.Button('_', visible=False), sg.Button('.', visible=False),],
         [sg.Text("La estructura de las carpetas quedará así: ", key ="-TEXT-STRUCTURE-", visible=False)],
         [sg.Text(size=(100,1), key="-EXAMPLE-")],
-        [sg.Push(), sg.Button('Siguiente', key="-NEXT-", visible=False)]
+        [sg.Push(), sg.Button("Siguiente", key="-NEXT-", visible=False)]
     ]
 
     choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(400, 500))
@@ -84,8 +88,9 @@ def create(data_from_excel, headings):
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
 
-        if event == "Siguiente":
+        if event == "-NEXT-":
             choose_move_file_options_window.close()
+            choose_destination_window.create()
 
 
  

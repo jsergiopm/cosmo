@@ -4,8 +4,7 @@ import move_files_window
 
 
 def run():
-    #file_name, folder_name, status = read_csv()
-    #move_file(file_name, folder_name, status)
+
     sg.theme("LightBrown3")
 
     main_window_layout = [
