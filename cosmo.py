@@ -5,7 +5,7 @@ import move_files_window
 
 def run():
 
-    sg.theme("LightBrown3")
+    sg.theme('Light Blue 3')
 
     main_window_layout = [
         [

@@ -45,9 +45,11 @@ def create(data_from_excel, headings):
         if event == sg.WIN_CLOSED:
             break
         if event == "Agregar":
-            selected_options.append(values['-HEADINGS-'][0])
-            choose_move_file_options_window['-SELECTION-'].update(selected_options)
-        
+            try:
+                selected_options.append(values['-HEADINGS-'][0])
+                choose_move_file_options_window['-SELECTION-'].update(selected_options)
+            except:
+                sg.popup("Debe seleccionar una opción del listado")        
         if event == "Quitar":
             try:
                 selected_options.remove(values['-SELECTION-'][0])
