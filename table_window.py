@@ -8,7 +8,7 @@ def create(data_from_excel, headings):
             data_to_show.append(data_from_excel[i])
 
     table_window_layout = [
-                        [sg.Text('Vista previa del inventario', justification='center')],
+                        [sg.Text('Vista previa del inventario: ', justification='center')],
                         [sg.Table(values=data_to_show, 
                         headings=headings, 
                         max_col_width=35,

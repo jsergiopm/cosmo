@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import change_filename_window
 import move_files_window
+import take_out_files_window
 
 
 def run():
@@ -16,6 +17,7 @@ def run():
         [
         sg.Button("Cambiar"),
         sg.Button("Mover archivos"),
+        sg.Button("Sacar archivos")
         ],  
     ]
 
@@ -32,8 +34,11 @@ def run():
         elif event == "Mover archivos":
             main_window.close()
             move_files_window.create()
-            
 
+        elif event == "Sacar archivos":
+            main_window.close()
+            take_out_files_window.create()
+            
 
 if __name__ == "__main__":
     run()
