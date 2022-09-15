@@ -8,7 +8,7 @@ def create(file_list, folder, list_of_new_names):
         [sg.ProgressBar(BAR_MAX, orientation='h', size=(20,20), key='-PROG-')],
         [sg.Cancel()]]
 
-    change_progress_window = sg.Window('Cambiar nombre de los atchivos', change_progress_window_layout)
+    change_progress_window = sg.Window('Cambiar nombre de los archivos', change_progress_window_layout)
 
     for i in range(len(file_list)):
         event = change_progress_window.read(timeout=10)

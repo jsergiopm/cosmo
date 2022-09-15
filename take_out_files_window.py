@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import os
 import take_out_files_progress_window
+import cosmo
 
 
 def create():
@@ -9,7 +10,7 @@ def create():
         sg.Push(), sg.Input(), sg.FolderBrowse(key='-SOURCE-', button_text="Seleccionar")],
         [sg.Text("Selecciona la carpeta donde quedarán los archivos: "), 
         sg.Push(), sg.Input(key='-DESTINATION-'), sg.FolderBrowse(button_text="Seleccionar")],
-        [sg.Push(), sg.Button("Sacar archivos")]
+        [sg.Button("Volver al inicio"), sg.Push(), sg.Button("Sacar archivos")]
     ]
 
     take_out_files_window = sg.Window("Sacar archivos", take_out_files_layout)
@@ -31,3 +32,7 @@ def create():
                 take_out_files_progress_window.create(files_qty, src_path, dst_path)
             else:
                 sg.popup('No existen archivos PDF en la carpeta seleccionada')
+        
+        if event == 'Volver al inicio':
+            take_out_files_window.close()
+            cosmo.run()

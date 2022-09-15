@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
-import choose_destination_window
 import pandas as pd
+import move_files_progress_window
 
 def create_structure(separator, selected_options, data_from_excel):
     indexes = []
@@ -17,10 +17,25 @@ def create_structure(separator, selected_options, data_from_excel):
                 break
             else:
                 final_structure = final_structure + separator
-    return final_structure
+    filenames = []
+    for row in range(len(data_from_excel)):
+        filename = ""
+        if row > 0:
+            for i in range(len(indexes)):
+                if pd.isna(filename):
+                    pass
+                else:
+                    filename = "%s%s" %(filename, data_from_excel[row][indexes[i]])
+                    if i + 1 == len(indexes):
+                        break
+                    else:
+                        filename += separator
+            filenames.append(filename)
+        
+    return final_structure, filenames
 
 
-def create(data_from_excel, headings):
+def create(data_from_excel, headings, source_path, destination_path, subfolder):
     selected_options=[]
     choose_move_file_options_window_layout = [
         [sg.Text('Selecciona el nombre que tendrán las carpetas: ')],
@@ -38,7 +53,7 @@ def create(data_from_excel, headings):
         [sg.Push(), sg.Button("Siguiente", key="-NEXT-", visible=False)]
     ]
 
-    choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(400, 500))
+    choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(400, 600))
 
     while True:
         event, values = choose_move_file_options_window.read()
@@ -69,7 +84,8 @@ def create(data_from_excel, headings):
         if event == "-":
             choose_move_file_options_window["_"].update(visible=False)
             choose_move_file_options_window["."].update(visible=False)
-            final_structure = create_structure("-", selected_options, data_from_excel)
+            choosed_sepatator = "-"
+            final_structure, filenames = create_structure(choosed_sepatator, selected_options, data_from_excel)
             choose_move_file_options_window["-TEXT-STRUCTURE-"].update(visible=True)
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
@@ -77,7 +93,8 @@ def create(data_from_excel, headings):
         if event == "_":
             choose_move_file_options_window["-"].update(visible=False)
             choose_move_file_options_window["."].update(visible=False)
-            final_structure = create_structure("_", selected_options, data_from_excel)
+            choosed_sepatator = "_"
+            final_structure, filenames = create_structure(choosed_sepatator, selected_options, data_from_excel)
             choose_move_file_options_window["-TEXT-STRUCTURE-"].update(visible=True)
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
@@ -85,14 +102,14 @@ def create(data_from_excel, headings):
         if event == ".":
             choose_move_file_options_window["_"].update(visible=False)
             choose_move_file_options_window["-"].update(visible=False)
-            final_structure = create_structure(".", selected_options, data_from_excel)
+            choosed_sepatator = "."
+            final_structure, filenames = create_structure(choosed_sepatator, selected_options, data_from_excel)
             choose_move_file_options_window["-TEXT-STRUCTURE-"].update(visible=True)
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
 
         if event == "-NEXT-":
             choose_move_file_options_window.close()
-            choose_destination_window.create()
-
+            move_files_progress_window.create(source_path, destination_path, subfolder, filenames)
 
  

@@ -31,7 +31,6 @@ def create():
         data_from_excel = pd.read_html(excel)
         excel_2 = data_from_excel[0]
         data_from_excel = excel_2.values.tolist()
-        # print(data_from_excel)
         if event == "Cargar inventario":
             move_files_window.close()
             headings = [str(data_from_excel[0][x]) for x in range(len(data_from_excel[0]))]

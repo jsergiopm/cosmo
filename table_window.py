@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-import choose_move_files_options_window
+import choose_destination_window
 
 def create(data_from_excel, headings):
     data_to_show =[]
@@ -28,6 +28,6 @@ def create(data_from_excel, headings):
             break
         if event == "Siguiente":
             table_window.close()
-            choose_move_files_options_window.create(data_from_excel, headings)
+            choose_destination_window.create(data_from_excel, headings)
 
             
