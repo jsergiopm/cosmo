@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import pandas as pd
 import table_window
+import html5lib
 
 
 def create():
@@ -17,7 +18,7 @@ def create():
                 sg.Listbox(values=[], enable_events=True, size=(40, 10), key="OLD-FILENAMES-LIST", visible = False),
             ],
             [
-            sg.Button("Cargar inventario")
+            sg.Button("Cargar inventario"), sg.Text("Cargando inventario, por favor espere...", key="-LOADING-", visible=False)
             ], 
             ]
 
@@ -27,6 +28,7 @@ def create():
         if event == sg.WIN_CLOSED or event == 'Exit':
             move_files_window.Close()
             break
+        sg.popup("Espere mientras se carga el inventario...", custom_text="" )
         excel = values["excel"]
         data_from_excel = pd.read_html(excel)
         excel_2 = data_from_excel[0]

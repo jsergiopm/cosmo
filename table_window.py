@@ -21,6 +21,7 @@ def create(data_from_excel, headings):
                         [sg.Text('Solo se muestran los 10 primeros registros')],
                         [sg.Push(), sg.Button('Siguiente')]
                     ]
+    
     table_window = sg.Window("Información del inventario", table_window_layout, element_justification='c', size=(1000, 500))
     while True:
         event, values = table_window.read()

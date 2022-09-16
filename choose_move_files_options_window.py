@@ -50,7 +50,7 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
         [sg.Button('-', visible=False), sg.Button('_', visible=False), sg.Button('.', visible=False),],
         [sg.Text("La estructura de las carpetas quedará así: ", key ="-TEXT-STRUCTURE-", visible=False)],
         [sg.Text(size=(100,1), key="-EXAMPLE-")],
-        [sg.Push(), sg.Button("Siguiente", key="-NEXT-", visible=False)]
+        [sg.Push(), sg.Button("Crear carpetas", key="-NEXT-", visible=False)]
     ]
 
     choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(400, 600))
