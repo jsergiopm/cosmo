@@ -110,6 +110,6 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
 
         if event == "-NEXT-":
             choose_move_file_options_window.close()
-            move_files_progress_window.create(source_path, destination_path, subfolder, filenames)
+            move_files_progress_window.create(source_path, destination_path, subfolder, filenames, headings)
 
  
