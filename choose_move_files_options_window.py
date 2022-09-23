@@ -50,10 +50,12 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
         [sg.Button('-', visible=False), sg.Button('_', visible=False), sg.Button('.', visible=False),],
         [sg.Text("La estructura de las carpetas quedará así: ", key ="-TEXT-STRUCTURE-", visible=False)],
         [sg.Text(size=(100,1), key="-EXAMPLE-")],
-        [sg.Push(), sg.Button("Crear carpetas", key="-NEXT-", visible=False)]
+        [sg.Text('Selecciona la columna del inventario que hace referencia al nombre del archivo', key='-SELECTED COLUMN-', visible=False)],
+        [sg.Combo(headings, default_value="N° Identificacion", key='-Combo-', visible=False)],
+        [sg.Push(), sg.Button("Mover archivos", key="-NEXT-", visible=False)]
     ]
 
-    choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(400, 600))
+    choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(500, 600))
 
     while True:
         event, values = choose_move_file_options_window.read()
@@ -72,7 +74,7 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
                 pass    
             choose_move_file_options_window['-SELECTION-'].update(selected_options)
         
-        if event == "Avanzar":
+        if event == "Avanzar" and len(selected_options) > 0:
             choose_move_file_options_window["-HEADINGS-"].update(disabled=True)
             choose_move_file_options_window["-SELECTION-"].update(disabled=True)
             choose_move_file_options_window["-SEPARATOR-"].update(visible=True)
@@ -88,6 +90,8 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
             final_structure, filenames = create_structure(choosed_sepatator, selected_options, data_from_excel)
             choose_move_file_options_window["-TEXT-STRUCTURE-"].update(visible=True)
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
+            choose_move_file_options_window["-SELECTED COLUMN-"].update(visible=True)
+            choose_move_file_options_window["-Combo-"].update(visible=True)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
 
         if event == "_":
@@ -97,6 +101,8 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
             final_structure, filenames = create_structure(choosed_sepatator, selected_options, data_from_excel)
             choose_move_file_options_window["-TEXT-STRUCTURE-"].update(visible=True)
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
+            choose_move_file_options_window["-SELECTED COLUMN-"].update(visible=True)
+            choose_move_file_options_window["-Combo-"].update(visible=True)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
 
         if event == ".":
@@ -106,10 +112,13 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
             final_structure, filenames = create_structure(choosed_sepatator, selected_options, data_from_excel)
             choose_move_file_options_window["-TEXT-STRUCTURE-"].update(visible=True)
             choose_move_file_options_window["-EXAMPLE-"].update(final_structure)
+            choose_move_file_options_window["-SELECTED COLUMN-"].update(visible=True)
+            choose_move_file_options_window["-Combo-"].update(visible=True)
             choose_move_file_options_window["-NEXT-"].update(visible=True)
+
 
         if event == "-NEXT-":
             choose_move_file_options_window.close()
-            move_files_progress_window.create(source_path, destination_path, subfolder, filenames, headings)
+            move_files_progress_window.create(source_path, destination_path, subfolder, filenames, headings, data_from_excel)
 
  

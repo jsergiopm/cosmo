@@ -12,12 +12,12 @@ def run():
             sg.T("")
         ],
         [sg.Text('Bienvenido a Cosmo', size=(30, 1), justification='center', font=("Helvetica", 25))],
-        [sg.Text('Selecciona la instrucción que vas a ejecutar')], 
+        [sg.Push(), sg.Text('Selecciona la instrucción que vas a ejecutar'), sg.Push()], 
         [
         sg.Button("Cambiar nombre"),
         sg.Button("Mover archivos"),
         sg.Button("Sacar archivos")
-        ],  
+        ],
     ]
 
     main_window = sg.Window('Cosmo', main_window_layout, size=(340,150))
