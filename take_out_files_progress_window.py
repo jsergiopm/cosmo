@@ -9,7 +9,7 @@ def create(qty, src_path, dst_path):
     [sg.ProgressBar(BAR_MAX, orientation='h', size=(20,20), key='-PROG-')],
     [sg.Cancel()]]
 
-    take_out_files_progress_window = sg.Window('Sacando los archivos', take_out_files_progress_window_layout)
+    take_out_files_progress_window = sg.Window('Sacando los archivos', take_out_files_progress_window_layout, icon="./assets/favicon.ico")
     files_qty = 0
     for root, dirs, files in os.walk(src_path):
         event = take_out_files_progress_window.read(timeout=10)

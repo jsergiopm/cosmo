@@ -1,7 +1,9 @@
+from hashlib import new
 import PySimpleGUI as sg
 import os
 import shutil
 from pathlib import Path
+
 
 def extract_id(filename):
     filename = filename.removesuffix('.pdf')
@@ -9,6 +11,18 @@ def extract_id(filename):
     id = filename.split('-')
     id = id[0]
     return id
+
+def add_iterator(file):
+    file = file.replace('.pdf', '-1.pdf')
+    i = 1
+    j = 0
+    while os.path.exists(file):
+        i += 1
+        j += 1
+        old_name = '-%i.pdf' % (j)
+        new_name = '-%i.pdf' % (i)
+        file = file.replace(old_name, new_name)
+    return file
 
 def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
     files = os.listdir(src_path)
@@ -19,7 +33,7 @@ def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
         [sg.Button('Cancelar')]]
     
 
-    move_files_progress_window = sg.Window('Crear carpetas', move_files_progress_window_layout)
+    move_files_progress_window = sg.Window('Crear carpetas', move_files_progress_window_layout, icon="./assets/favicon.ico")
  
     #Loop for create folder if no exists
     for i in range(len(filenames)):
@@ -46,6 +60,7 @@ def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
                 file_src = os.path.join(src_path, file)
                 folder_dst = os.path.join(dst_path, filenames[index])
                 file_dst = os.path.join(folder_dst, file)
+                if os.path.exists(file_dst):file_dst = add_iterator(file_dst)
                 shutil.copy2(file_src, file_dst)
             except:
                 unknown_elements.append(id)

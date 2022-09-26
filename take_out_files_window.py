@@ -13,7 +13,7 @@ def create():
         [sg.Button("Volver al inicio"), sg.Push(), sg.Button("Sacar archivos")]
     ]
 
-    take_out_files_window = sg.Window("Sacar archivos", take_out_files_layout)
+    take_out_files_window = sg.Window("Sacar archivos", take_out_files_layout, icon="./assets/favicon.ico")
 
     while True:
         event, values = take_out_files_window.read()

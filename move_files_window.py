@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import pandas as pd
 import table_window
+import cosmo
 
 
 def create():
@@ -17,11 +18,11 @@ def create():
                 sg.Listbox(values=[], enable_events=True, size=(40, 10), key="OLD-FILENAMES-LIST", visible = False),
             ],
             [
-            sg.Button("Cargar inventario", disabled=False), sg.Text("Cargando inventario, por favor espere...", key="-LOADING-", visible=False)
+            sg.Button("Cargar inventario", disabled=False), sg.Text("Cargando inventario, por favor espere...", key="-LOADING-", visible=False),
             ], 
             ]
 
-    move_files_window = sg.Window('Cosmo | Mover archivos', move_files_window_layout)
+    move_files_window = sg.Window('Cosmo | Mover archivos', move_files_window_layout, icon="./assets/favicon.ico")
     while True:
         event, values = move_files_window.read()
         if event == sg.WIN_CLOSED or event == 'Exit':

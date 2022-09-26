@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import pandas as pd
 import move_files_progress_window
+import cosmo
 
 def create_structure(separator, selected_options, data_from_excel):
     indexes = []
@@ -38,6 +39,7 @@ def create_structure(separator, selected_options, data_from_excel):
 def create(data_from_excel, headings, source_path, destination_path, subfolder):
     selected_options=[]
     choose_move_file_options_window_layout = [
+        [sg.Button("Regresar al inicio", key="-BACK2HOME-")],
         [sg.Text('Selecciona el nombre que tendrán las carpetas: ')],
         [sg.Listbox(headings, disabled=False, size=(20, len(headings)), key='-HEADINGS-', visible=True),
         sg.Push(),
@@ -55,7 +57,7 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
         [sg.Push(), sg.Button("Mover archivos", key="-NEXT-", visible=False)]
     ]
 
-    choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, size=(500, 600))
+    choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, icon="./assets/favicon.ico", size=(500, 600))
 
     while True:
         event, values = choose_move_file_options_window.read()
@@ -120,5 +122,8 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
         if event == "-NEXT-":
             choose_move_file_options_window.close()
             move_files_progress_window.create(source_path, destination_path, subfolder, filenames, headings, data_from_excel)
-
+        
+        if event == "-BACK2HOME-":
+            choose_move_file_options_window.close()
+            cosmo.run()
  

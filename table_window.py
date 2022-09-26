@@ -22,13 +22,13 @@ def create(data_from_excel, headings):
                         [sg.Push(), sg.Button('Siguiente')]
                     ]
     
-    table_window = sg.Window("Información del inventario", table_window_layout, element_justification='c', size=(1000, 500))
+    table_window = sg.Window("Información del inventario", table_window_layout, icon="./assets/favicon.ico", element_justification='c', size=(1000, 500))
     while True:
         event, values = table_window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if event == "Siguiente":
-            table_window.close()
+            table_window.Close()
             choose_destination_window.create(data_from_excel, headings)
 
             

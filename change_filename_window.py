@@ -37,7 +37,7 @@ def create():
             ],
             [sg.Text('Cambiar nombre de archivos másivamente', justification='center', font=("Helvetica", 25), relief=sg.RELIEF_RIDGE)],
             [
-                [sg.Text("Selecciona una carpeta: "), 
+                [sg.Text("Selecciona la carpeta donde se encuentran los archivos: "), 
                 sg.FolderBrowse(key="FolderBrowse", button_text="Buscar")]
             ],
             [
@@ -50,11 +50,12 @@ def create():
             ],
             [
             sg.Button("Ver"),
+            sg.Push(),
             sg.Button("Comenzar")
             ], 
             ]
     
-    change_filenames_window = sg.Window('Cosmo | Cambiar nombre', change_filenames_window_layout)
+    change_filenames_window = sg.Window('Cosmo | Cambiar nombre', change_filenames_window_layout, icon="./assets/favicon.ico")
     
     while True:
         event, values = change_filenames_window.read()
@@ -77,13 +78,16 @@ def create():
         ]
 
         if event == "Ver":
-            change_filenames_window["OLD-FILENAMES-LIST"].update(visible=True)
-            change_filenames_window["NEW-FILENAMES-LIST"].update(visible=True)
-            change_filenames_window["OLD-FILENAMES-LIST"].update(fnames)
-            csv_file = values["-FILE-"]
-            old_names, new_names = read_csv(csv_file)
-            list_of_new_names = change_filename(file_list, old_names, new_names)
-            change_filenames_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
+            try:
+                change_filenames_window["OLD-FILENAMES-LIST"].update(visible=True)
+                change_filenames_window["NEW-FILENAMES-LIST"].update(visible=True)
+                change_filenames_window["OLD-FILENAMES-LIST"].update(fnames)
+                csv_file = values["-FILE-"]
+                old_names, new_names = read_csv(csv_file)
+                list_of_new_names = change_filename(file_list, old_names, new_names)
+                change_filenames_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
+            except:
+                sg.popup("No ha especificado una ruta válida")
         if event == "Comenzar":
             change_filenames_window.close()
             change_progress_window.create(file_list, folder, list_of_new_names)
