@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import pandas as pd
 import table_window
-import cosmo
+
 
 
 def create():

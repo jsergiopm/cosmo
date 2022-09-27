@@ -1,6 +1,5 @@
 from pathlib import Path
 import PySimpleGUI as sg
-import cosmo
 import choose_move_files_options_window
 
 
@@ -29,7 +28,7 @@ def create(data_from_excel, headings):
         [
                 [collapse(subfolder_section, '-SUBFOLDER SECTION-', visible=False)]
         ],
-                [sg.Button("Volver al inicio", key="-BACK2HOME-"), sg.Push(), sg.Button('Siguiente')]
+                [ sg.Button('Siguiente')]
         ]
 
 
@@ -46,8 +45,7 @@ def create(data_from_excel, headings):
             opened = not opened
             choose_destination_window['-OPEN SEC SUBFOLDER-CHECKBOX'].update(opened)
             choose_destination_window['-SUBFOLDER SECTION-'].update(visible=opened)
-        
-        if event == "-BACK2HOME-":cosmo.run()
+
 
         if event == "Siguiente":
             source_folder = values["-SRC FOLDER-"]

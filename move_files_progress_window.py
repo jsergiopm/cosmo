@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 import os
 import shutil
 from pathlib import Path
+import cosmo
 
 
 def extract_id(filename):
@@ -71,7 +72,9 @@ def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
     if i + 1 < len(filenames):
         sg.popup('Operación cancelada')
     else:
-        sg.popup('Carpetas creadas con éxito')
+        move_files_progress_window.close()
+        sg.popup('Carpetas nuevas creadas y archivos copiados con éxito')
+        cosmo.run()
             
 
 

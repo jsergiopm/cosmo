@@ -3,6 +3,7 @@ import pandas as pd
 import move_files_progress_window
 import cosmo
 
+
 def create_structure(separator, selected_options, data_from_excel):
     indexes = []
     final_structure = ""
@@ -39,7 +40,7 @@ def create_structure(separator, selected_options, data_from_excel):
 def create(data_from_excel, headings, source_path, destination_path, subfolder):
     selected_options=[]
     choose_move_file_options_window_layout = [
-        [sg.Button("Regresar al inicio", key="-BACK2HOME-")],
+        [sg.Button("Volver al inicio"), sg.Push()],
         [sg.Text('Selecciona el nombre que tendrán las carpetas: ')],
         [sg.Listbox(headings, disabled=False, size=(20, len(headings)), key='-HEADINGS-', visible=True),
         sg.Push(),
@@ -123,7 +124,7 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
             choose_move_file_options_window.close()
             move_files_progress_window.create(source_path, destination_path, subfolder, filenames, headings, data_from_excel)
         
-        if event == "-BACK2HOME-":
+        if event == 'Volver al inicio':
             choose_move_file_options_window.close()
             cosmo.run()
  
