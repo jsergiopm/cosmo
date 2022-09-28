@@ -5,9 +5,9 @@ import take_out_files_window
 
 
 def play_intro():
-    FILENAME = r'../assets/intro_img.png'
+    FILENAME = r'./assets/intro_img.png'
     DISPLAY_TIME_MILLISECONDS = 4000
-
+    
     sg.Window('Window Title', [[sg.Image(FILENAME)]], size=(500,500), transparent_color=sg.theme_background_color(), no_titlebar=True, keep_on_top=True).read(timeout=DISPLAY_TIME_MILLISECONDS, close=True)
 
 
@@ -26,7 +26,7 @@ def run():
         sg.Button("Sacar archivos")
         ],
     ]
-
+    
     main_window = sg.Window('Cosmo',main_window_layout, icon="../assets/favicon.ico", size=(340,150))
 
     while True:

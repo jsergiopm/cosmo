@@ -51,8 +51,7 @@ def create():
             [
             sg.Button("Ver"),
             sg.Push(),
-            sg.Button("Comenzar")
-            ], 
+            sg.Button("Comenzar",key="-START-", visible=False) ], 
             ]
     
     change_filenames_window = sg.Window('Cosmo | Cambiar nombre', change_filenames_window_layout, icon="./assets/favicon.ico")
@@ -81,6 +80,7 @@ def create():
             try:
                 change_filenames_window["OLD-FILENAMES-LIST"].update(visible=True)
                 change_filenames_window["NEW-FILENAMES-LIST"].update(visible=True)
+                change_filenames_window["-START-"].update(visible=True)
                 change_filenames_window["OLD-FILENAMES-LIST"].update(fnames)
                 csv_file = values["-FILE-"]
                 old_names, new_names = read_csv(csv_file)
@@ -88,6 +88,6 @@ def create():
                 change_filenames_window["NEW-FILENAMES-LIST"].update(list_of_new_names)
             except:
                 sg.popup("No ha especificado una ruta válida")
-        if event == "Comenzar":
+        if event == "-START-":
             change_filenames_window.close()
-            change_progress_window.create(file_list, folder, list_of_new_names)
+            change_progress_window.create(old_names, new_names, folder, file_list)

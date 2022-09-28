@@ -1,8 +1,24 @@
 import PySimpleGUI as sg
 import os
 
+def add_iterator(file):
+    file = file.replace('.pdf', '-1.pdf')
+    i = 1
+    j = 0
+    while os.path.exists(file):
+        i += 1
+        j += 1
+        old_name = '-%i.pdf' % (j)
+        new_name = '-%i.pdf' % (i)
+        file = file.replace(old_name, new_name)
+    return file
 
-def create(file_list, folder, list_of_new_names):
+def change_filename(file, old_names, new_names):
+    try:return new_names[old_names.index(file)]
+    except:return ""
+
+
+def create(old_names, new_names, folder, file_list):
     BAR_MAX =  len(file_list)
     change_progress_window_layout = [[sg.Text('Cambiando nombres...')],
         [sg.ProgressBar(BAR_MAX, orientation='h', size=(20,20), key='-PROG-')],
@@ -14,9 +30,12 @@ def create(file_list, folder, list_of_new_names):
         event = change_progress_window.read(timeout=10)
         if event == 'Cancel' or event == sg.WIN_CLOSED:
             break
-        source = os.path.join(folder,file_list[i])
-        destination = os.path.join(folder,list_of_new_names[i])
-        os.rename(source, destination)
+        source = os.path.join(folder, file_list[i])
+        file = change_filename(file_list[i], old_names, new_names)
+        destination = os.path.join(folder, file)
+        if file != "":
+            if os.path.exists(destination):destination = add_iterator(destination)
+            os.rename(source, destination)
         change_progress_window['-PROG-'].update(i+1)
     change_progress_window.close()
 
