@@ -10,7 +10,7 @@ def collapse(layout, key, visible):
 def create():
 
     subfolder_section = [
-        [sg.T('Ingresa aquí el nombre de la subcarpeta'),
+        [sg.T('Ingresa aquí el nombre de la carpeta'),
         sg.I('', k='-SUBFOLDER-')]
     ]
 
@@ -20,7 +20,7 @@ def create():
         [sg.Text("Selecciona la carpeta donde quedarán los archivos: "), 
         sg.Push(), sg.Input(key='-DESTINATION-'), sg.FolderBrowse(button_text="Seleccionar")],
         [
-                [sg.Checkbox('Añadir subcarpeta', enable_events=True, key="-OPEN SEC SUBFOLDER-CHECKBOX")]
+                [sg.Checkbox('Selecciona esta opción si quieres buscar dentro de una carpeta específica', enable_events=True, key="-OPEN SEC SUBFOLDER-CHECKBOX")]
         ],
         [
                 [collapse(subfolder_section, '-SUBFOLDER SECTION-', visible=False)]

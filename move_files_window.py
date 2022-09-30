@@ -11,7 +11,7 @@ def create():
             ],
             [sg.Text('Mover archivos másivamente', justification='center', font=("Helvetica", 25), relief=sg.RELIEF_RIDGE)],
             [
-                sg.Text("Seleccionar inventario: "), 
+                sg.Text("Seleccionar inventario: (Inventario descargado de HADES .xls) "), 
                 sg.Input(), sg.FileBrowse(key="excel", file_types=(('HADES','*.xls'),('INVENTARIO','*.xlsx')), button_text="Seleccionar")
             ],
             [

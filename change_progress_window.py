@@ -31,7 +31,8 @@ def create(old_names, new_names, folder, file_list):
         if event == 'Cancel' or event == sg.WIN_CLOSED:
             break
         source = os.path.join(folder, file_list[i])
-        file = change_filename(file_list[i], old_names, new_names)
+        file = file_list[i].replace(".PDF",".pdf")
+        file = change_filename(file, old_names, new_names)
         destination = os.path.join(folder, file)
         if file != "":
             if os.path.exists(destination):destination = add_iterator(destination)

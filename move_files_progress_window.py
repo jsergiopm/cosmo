@@ -1,3 +1,4 @@
+from distutils.log import error
 from hashlib import new
 import PySimpleGUI as sg
 import os
@@ -25,7 +26,7 @@ def add_iterator(file):
         file = file.replace(old_name, new_name)
     return file
 
-def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
+def create(src_path, dst_path, subfolder, filenames, data_from_excel, column):
     files = os.listdir(src_path)
     BAR_MAX =  len(filenames) + len(files)
 
@@ -33,23 +34,32 @@ def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
         [sg.ProgressBar(BAR_MAX, orientation='h', size=(20,20), key='-PROG-')],
         [sg.Button('Cancelar')]]
     
+    not_moved_or_not_created_layout = [
+
+    ]
+    
 
     move_files_progress_window = sg.Window('Crear carpetas', move_files_progress_window_layout, icon="./assets/favicon.ico")
- 
+    
+    error_folders = []
+
     #Loop for create folder if no exists
     for i in range(len(filenames)):
         event, values = move_files_progress_window.read(10)
         if event == 'Cancelar' or event == sg.WIN_CLOSED:break
         destination = os.path.join(dst_path, filenames[i])
         if subfolder != 'none':destination = os.path.join(destination, subfolder)
-        Path(destination).mkdir(parents= True, exist_ok= True)
+        try:
+            Path(destination).mkdir(parents= True, exist_ok= True)
+        except:
+            error_folders.append(filenames[i])
         move_files_progress_window['-PROG-'].update(i+1)
 
     ids_in_inventory = []
 
     for row in range(len(data_from_excel)):
         if row > 0:
-            ids_in_inventory.append(data_from_excel[row][7])
+            ids_in_inventory.append(data_from_excel[row][column])
 
     unknown_elements = []
 
@@ -66,8 +76,12 @@ def create(src_path, dst_path, subfolder, filenames, headings, data_from_excel):
             except:
                 unknown_elements.append(id)
             
-    if len(unknown_elements) > 0:
-        sg.popup("Existen elementos en la carpeta que no están en el inventario", unknown_elements)
+    if (len(unknown_elements) > 0) or (len(error_folders) > 0):
+        if len(unknown_elements) > 0:
+            print("Existen elementos", len(unknown_elements),"en la carpeta que no están en el inventario")
+            print("Existen elementos en la carpeta que no están en el inventario", unknown_elements)
+        if len(error_folders) > 0:
+            print("Existen carpetas que no se crearon por problemas en sus nombres", error_folders)
             
     if i + 1 < len(filenames):
         sg.popup('Operación cancelada')

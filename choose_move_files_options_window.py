@@ -54,8 +54,8 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
         [sg.Text("La estructura de las carpetas quedará así: ", key ="-TEXT-STRUCTURE-", visible=False)],
         [sg.Text(size=(100,1), key="-EXAMPLE-")],
         [sg.Text('Selecciona la columna del inventario que hace referencia al nombre del archivo', key='-SELECTED COLUMN-', visible=False)],
-        [sg.Combo(headings, default_value="N° Identificacion", key='-Combo-', visible=False)],
-        [sg.Push(), sg.Button("Mover archivos", key="-NEXT-", visible=False)]
+        [sg.Combo(headings, default_value="N° Identificación", key='-Combo-', visible=False), sg.Push(), sg.Button("Mover archivos", key="-NEXT-", visible=False) ],
+        []
     ]
 
     choose_move_file_options_window = sg.Window("Mover archivos", choose_move_file_options_window_layout, icon="./assets/favicon.ico", size=(500, 600))
@@ -121,8 +121,9 @@ def create(data_from_excel, headings, source_path, destination_path, subfolder):
 
 
         if event == "-NEXT-":
+            column = headings.index(values["-Combo-"])
             choose_move_file_options_window.close()
-            move_files_progress_window.create(source_path, destination_path, subfolder, filenames, headings, data_from_excel)
+            move_files_progress_window.create(source_path, destination_path, subfolder, filenames, data_from_excel, column)
         
         if event == 'Volver al inicio':
             choose_move_file_options_window.close()

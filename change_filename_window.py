@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import csv
 import os
 import change_progress_window
+import cosmo
 
 
 def read_csv(filename):
@@ -41,7 +42,7 @@ def create():
                 sg.FolderBrowse(key="FolderBrowse", button_text="Buscar")]
             ],
             [
-                sg.Text("Seleccionar inventario: "), 
+                sg.Text("Seleccionar inventario: (ARCHIVO CSV QUE INCLUYE LA COLUMNA CON EL NOMBRE ANTIGUO Y LA COLUMNA CON EL NUEVO NOMBRE) "), 
                 sg.Input(), sg.FileBrowse(key="-FILE-", file_types=(('CSV FILES', '*.csv'),), button_text="Seleccionar")
             ],
             [
@@ -50,6 +51,7 @@ def create():
             ],
             [
             sg.Button("Ver"),
+            sg.Button("Volver al inicio"),
             sg.Push(),
             sg.Button("Comenzar",key="-START-", visible=False) ], 
             ]
@@ -91,3 +93,6 @@ def create():
         if event == "-START-":
             change_filenames_window.close()
             change_progress_window.create(old_names, new_names, folder, file_list)
+        if event == "Volver al inicio":
+            change_filenames_window.Close()
+            cosmo.run()
